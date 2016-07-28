@@ -179,6 +179,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DataModel.pdb" />
+    <Content Include="App_Data\JXB_DB_log.ldf">
+      <DependentUpon>JXB_DB.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\JXB_DB.mdf" />
+    <Content Include="App_Data\Loyung_Data.sql" />
     <Content Include="Content\Assembly\jQwnl\css\wnl.css" />
     <Content Include="Content\Assembly\jQwnl\js\183.js" />
     <Content Include="Content\Assembly\jQwnl\js\lhl\hl2015.js" />
@@ -315,6 +321,8 @@
     <Content Include="Areas\UserManage\Views\UserManage\UserList.cshtml" />
     <Content Include="Areas\UserManage\Views\UserManage\GetUserList.cshtml" />
     <Content Include="Areas\UserManage\Views\UserManage\UserInfo.cshtml" />
+    <Content Include="App_Data\DataModel.PDM" />
+    <Content Include="App_Data\Loyung.ndf" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -370,7 +378,6 @@
     <Content Include="Views\说明.lzy" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\SystemSet\Models\" />
     <Folder Include="Areas\SystemSet\Views\Shared\" />
     <Folder Include="Areas\UserManage\Models\" />
