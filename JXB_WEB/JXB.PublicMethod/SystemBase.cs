@@ -1,4 +1,4 @@
-﻿using Loyung.DBModels;
+﻿using JXB.DBModels;
 /*
  * 创建时间：2016-05-18
  * 创建人：刘自洋
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Loyung.PublicMethod
+namespace JXB.PublicMethod
 {
     /// <summary>
     /// 存放系统一些常用方法

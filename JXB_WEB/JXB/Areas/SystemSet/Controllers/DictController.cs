@@ -3,15 +3,15 @@
  * 创建人：刘自洋
  * 说明：该模块用于管理系统设置——字典管理模块
  */
-using Loyung.DBModels;
-using Loyung.PublicMethod;
+using JXB.DBModels;
+using JXB.PublicMethod;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Loyung.Areas.SystemSet.Controllers
+namespace JXB.Areas.SystemSet.Controllers
 {
     /// <summary>
     /// 字典管理

@@ -1,13 +1,13 @@
-﻿using Loyung.DBModels;
-using Loyung.PublicMethod;
-using Loyung.Util.SysBase;
+﻿using JXB.DBModels;
+using JXB.PublicMethod;
+using JXB.Util.SysBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Loyung.Controllers
+namespace JXB.Controllers
 {
     /// <summary>
     /// 系统注册登录等基础操作

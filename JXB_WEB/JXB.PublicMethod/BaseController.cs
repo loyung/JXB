@@ -1,4 +1,4 @@
-﻿using Loyung.DBModels;
+﻿using JXB.DBModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,18 +9,18 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
 
-namespace Loyung.PublicMethod
+namespace JXB.PublicMethod
 {
     public class BaseController : Controller
     {
         public BaseController()
         {
-            this.DBHelper = new LoyungDBDataContext();
+            this.DBHelper = new JXBDBDataContext();
         }
         /// <summary>
         /// 数据上下文操作实例
         /// </summary>
-        protected LoyungDBDataContext DBHelper;
+        protected JXBDBDataContext DBHelper;
 
         /// <summary>
         /// 系统当前登录用户

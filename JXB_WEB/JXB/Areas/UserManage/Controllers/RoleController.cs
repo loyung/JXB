@@ -3,15 +3,15 @@
  * 创建人：刘自洋
  * 说明：该模块用于用户管理——系统角色管理
  */
-using Loyung.DBModels;
-using Loyung.PublicMethod;
+using JXB.DBModels;
+using JXB.PublicMethod;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Loyung.Areas.UserManage.Controllers
+namespace JXB.Areas.UserManage.Controllers
 {
     /// <summary>
     /// 用户角色管理

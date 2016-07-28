@@ -1,9 +1,9 @@
-﻿@using Loyung.DBModels;
-@using Loyung.PublicMethod;
+﻿@using JXB.DBModels;
+@using JXB.PublicMethod;
 
 @{
     ViewBag.Title = "_Left";
-    LoyungDBDataContext DBHelper = new LoyungDBDataContext();
+    JXBDBDataContext DBHelper = new JXBDBDataContext();
     if (Session["Userinfo"] == null)
     {
         Response.Redirect("/SysBase/Login");

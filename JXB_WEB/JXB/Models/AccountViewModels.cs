@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Loyung.Models
+namespace JXB.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

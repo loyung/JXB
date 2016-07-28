@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Loyung.PublicMethod
+namespace JXB.PublicMethod
 {
     /// <summary>
     /// 加密，解密，编码，解码

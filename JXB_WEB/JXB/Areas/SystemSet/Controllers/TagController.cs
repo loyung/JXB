@@ -1,5 +1,5 @@
-﻿using Loyung.DBModels;
-using Loyung.PublicMethod;
+﻿using JXB.DBModels;
+using JXB.PublicMethod;
 /*
  * 创建时间：2016-06-03
  * 创建人：刘自洋
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Loyung.Areas.SystemSet.Controllers
+namespace JXB.Areas.SystemSet.Controllers
 {
     /// <summary>
     /// 标签管理控制器

@@ -3,8 +3,8 @@
  * 创建人：刘自洋
  * 说明：菜单管理jstree，目前支持两级菜单
  */
-using Loyung.DBModels;
-using Loyung.PublicMethod;
+using JXB.DBModels;
+using JXB.PublicMethod;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Loyung.Areas.SystemSet.Controllers
+namespace JXB.Areas.SystemSet.Controllers
 {
     /// <summary>
     /// 菜单设置

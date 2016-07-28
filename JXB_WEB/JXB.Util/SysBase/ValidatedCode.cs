@@ -13,7 +13,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Web;
 
-namespace Loyung.Util.SysBase
+namespace JXB.Util.SysBase
 {
     /// <summary>  
     /// 验证码生成类

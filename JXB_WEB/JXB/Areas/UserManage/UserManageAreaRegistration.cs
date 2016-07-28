@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Loyung.Areas.UserManage
+namespace JXB.Areas.UserManage
 {
     public class UserManageAreaRegistration : AreaRegistration 
     {

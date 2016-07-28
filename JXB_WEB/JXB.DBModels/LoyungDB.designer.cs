@@ -22,8 +22,8 @@ namespace JXB.DBModels
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Loyung")]
-	public partial class LoyungDBDataContext : System.Data.Linq.DataContext
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="JXB")]
+	public partial class JXBDBDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -68,31 +68,31 @@ namespace JXB.DBModels
     partial void DeleteUSEUA(USEUA instance);
     #endregion
 		
-		public LoyungDBDataContext() : 
-				base(global::JXB.DBModels.Properties.Settings.Default.LoyungConnectionString, mappingSource)
+		public JXBDBDataContext() : 
+				base(global::JXB.DBModels.Properties.Settings.Default.JXBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public LoyungDBDataContext(string connection) : 
+		public JXBDBDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public LoyungDBDataContext(System.Data.IDbConnection connection) : 
+		public JXBDBDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public LoyungDBDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public JXBDBDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public LoyungDBDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public JXBDBDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Loyung.Startup))]
-namespace Loyung
+[assembly: OwinStartupAttribute(typeof(JXB.Startup))]
+namespace JXB
 {
     public partial class Startup
     {

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Loyung.Areas.SystemSet
+namespace JXB.Areas.SystemSet
 {
     public class SystemSetAreaRegistration : AreaRegistration 
     {

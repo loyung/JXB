@@ -8,9 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Loyung.Models;
+using JXB.Models;
 
-namespace Loyung.Controllers
+namespace JXB.Controllers
 {
     [Authorize]
     public class AccountController : Controller

@@ -26,10 +26,10 @@ namespace JXB.DBModels.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(Local);Initial Catalog=Loyung;User ID=sa;pwd=abc123!@#;")]
-        public string LoyungConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(Local);Initial Catalog=JXB;User ID=sa;pwd=abc123!@#;")]
+        public string JXBConnectionString {
             get {
-                return ((string)(this["LoyungConnectionString"]));
+                return ((string)(this["JXBConnectionString"]));
             }
         }
     }
