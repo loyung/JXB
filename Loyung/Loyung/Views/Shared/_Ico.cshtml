@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "_ico";
+}
+<script type="text/javascript">
+    var icoValue;//赋值ico值
+    var icoCss;//预览Ico元素
+    var layerico;//弹出layer,一定要用layerico赋值接收
+    $(function () {
+        icoValue = $("#model_ico");
+        icoCss= $("#ico_view");
+        $(".sys-ico i").click(function () {
+            if (icoValue!=null)
+                icoValue.val($(this).attr("class"));
+            if (layerico!=null)
+                layer.close(layerico);
+            if (icoCss != null)
+                icoCss.attr('class', $(this).attr("class") + " icon-2x");
+        });
+    });
+</script>
+<div class="sys-ico" id="_Ico" style="display:none;">
+    <ul>
+        <li><i class="icon-cloud-download"></i></li>
+        <li><i class="icon-cloud-upload"></i></li>
+        <li><i class="icon-lightbulb"></i></li>
+        <li><i class="icon-exchange"></i></li>
+        <li><i class="icon-bell-alt"></i></li>
+        <li><i class="icon-file-alt"></i></li>
+        <li><i class="icon-suitcase"></i></li>
+        <li><i class="icon-building"></i></li>
+        <li><i class="icon-h-sign"></i></li>
+        <li><i class="icon-plus-sign-alt"></i></li>
+        <li><i class="icon-spinner"></i></li>
+        <li><i class="icon-angle-left"></i></li>
+        <li><i class="icon-angle-right"></i></li>
+        <li><i class="icon-angle-up"></i></li>
+        <li><i class="icon-angle-down"></i></li>
+        <li><i class="icon-double-angle-left"></i></li>
+        <li><i class="icon-double-angle-right"></i></li>
+        <li><i class="icon-double-angle-up"></i></li>
+        <li><i class="icon-double-angle-down"></i></li>
+        <li><i class="icon-circle-blank"></i></li>
+        <li><i class="icon-circle"></i></li>
+        <li><i class="icon-desktop"></i></li>
+        <li><i class="icon-laptop"></i></li>
+        <li><i class="icon-tablet"></i></li>
+        <li><i class="icon-mobile-phone"></i></li>
+        <li><i class="icon-quote-left"></i></li>
+        <li><i class="icon-quote-right"></i></li>
+        <li><i class="icon-reply"></i></li>
+        <li><i class="icon-folder-close-alt"></i></li>
+        <li><i class="icon-folder-open-alt"></i></li>
+        <li><i class="icon-bar-chart"></i></li>
+        <li><i class="icon-book"></i></li>
+        <li><i class="icon-bookmark"></i></li>
+        <li><i class="icon-bookmark-empty"></i></li>
+        <li><i class="icon-bullhorn"></i></li>
+        <li><i class="icon-calendar"></i></li>
+        <li><i class="icon-camera"></i></li>
+        <li><i class="icon-check"></i></li>
+        <li><i class="icon-check-empty"></i></li>
+        <li><i class="icon-cloud"></i></li>
+        <li><i class="icon-cog"></i></li>
+        <li><i class="icon-cogs"></i></li>
+        <li><i class="icon-comment"></i></li>
+        <li><i class="icon-comments"></i></li>
+        <li><i class="icon-credit-card"></i></li>
+        <li><i class="icon-edit"></i></li>
+        <li><i class="icon-envelope"></i></li>
+        <li><i class="icon-film"></i></li>
+        <li><i class="icon-flag"></i></li>
+        <li><i class="icon-folder-close"></i></li>
+        <li><i class="icon-folder-open"></i></li>
+        <li><i class="icon-globe"></i></li>
+        <li><i class="icon-group"></i></li>
+        <li><i class="icon-hdd"></i></li>
+        <li><i class="icon-home"></i></li>
+        <li><i class="icon-heart-empty"></i></li>
+        <li><i class="icon-info-sign"></i></li>
+        <li><i class="icon-leaf"></i></li>
+        <li><i class="icon-lightbulb"></i></li>
+        <li><i class="icon-legal"></i></li>
+        <li><i class="icon-map-marker"></i></li>
+        <li><i class="icon-money"></i></li>
+        <li><i class="icon-pushpin"></i></li>
+        <li><i class="icon-random"></i></li>
+        <li><i class="icon-reorder"></i></li>
+        <li><i class="icon-reply"></i></li>
+        <li><i class="icon-road"></i></li>
+        <li><i class="icon-rss"></i></li>
+        <li><i class="icon-search"></i></li>
+        <li><i class="icon-shopping-cart"></i></li>
+        <li><i class="icon-signin"></i></li>
+        <li><i class="icon-sitemap"></i></li>
+        <li><i class="icon-star"></i></li>
+        <li><i class="icon-tag"></i></li>
+        <li><i class="icon-tasks"></i></li>
+        <li><i class="icon-thumbs-up"></i></li>
+        <li><i class="icon-thumbs-down"></i></li>
+        <li><i class="icon-time"></i></li>
+        <li><i class="icon-user"></i></li>
+        <li><i class="icon-wrench"></i></li>
+        <li><i class="icon-th-large"></i></li>
+        <li><i class="icon-th"></i></li>
+        <li><i class="icon-list"></i></li>
+        <li><i class="icon-list-alt"></i></li>
+    </ul>
+</div>

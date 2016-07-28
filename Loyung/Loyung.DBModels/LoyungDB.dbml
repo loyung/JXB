@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Loyung" Class="LoyungDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(Local);Initial Catalog=Loyung;User ID=sa" SettingsObjectName="Loyung.DBModels.Properties.Settings" SettingsPropertyName="LoyungConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.SYSDA" Member="SYSDA">
+    <Type Name="SYSDA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DA001" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="DA002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DA003" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="SYSDA_SYSDB" Member="SYSDB" ThisKey="ID" OtherKey="DB001" Type="SYSDB" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USEUB" Member="USEUB">
+    <Type Name="USEUB">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UB001" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="UB002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UB003" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="USEUA_USEUB" Member="USEUA" ThisKey="UB001" OtherKey="ID" Type="USEUA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSDB" Member="SYSDB">
+    <Type Name="SYSDB">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DB001" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DB002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DB003" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DB004" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="SYSDA_SYSDB" Member="SYSDA" ThisKey="DB001" OtherKey="ID" Type="SYSDA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSLA" Member="SYSLA">
+    <Type Name="SYSLA">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LA001" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="LA002" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LA003" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LA004" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="LA005" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="USEUA_SYSLA" Member="USEUA" ThisKey="LA004" OtherKey="ID" Type="USEUA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSMA" Member="SYSMA">
+    <Type Name="SYSMA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MA001" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MA002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MA003" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="MA004" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="MA005" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MA006" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="MA007" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="SYSMA_SYSMB" Member="SYSMB" ThisKey="ID" OtherKey="MB001" Type="SYSMB" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSMB" Member="SYSMB">
+    <Type Name="SYSMB">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MB001" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MB002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MB003" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MB004" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="SYSMB_USERB" Member="USERB" ThisKey="ID" OtherKey="RB002" Type="USERB" />
+      <Association Name="SYSMA_SYSMB" Member="SYSMA" ThisKey="MB001" OtherKey="ID" Type="SYSMA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSTA" Member="SYSTA">
+    <Type Name="SYSTA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TA001" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TA002" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TA003" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TA004" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="SYSTA_SYSTB" Member="SYSTB" ThisKey="ID" OtherKey="TB002" Type="SYSTB" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SYSTB" Member="SYSTB">
+    <Type Name="SYSTB">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TB001" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TB002" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="SYSTA_SYSTB" Member="SYSTA" ThisKey="TB002" OtherKey="ID" Type="SYSTA" IsForeignKey="true" />
+      <Association Name="USEUA_SYSTB" Member="USEUA" ThisKey="TB001" OtherKey="ID" Type="USEUA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USERA" Member="USERA">
+    <Type Name="USERA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RA001" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RA002" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="RA003" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="USERA_USERB" Member="USERB" ThisKey="ID" OtherKey="RB001" Type="USERB" />
+      <Association Name="USERA_USERC" Member="USERC" ThisKey="ID" OtherKey="RC002" Type="USERC" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USERB" Member="USERB">
+    <Type Name="USERB">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RB001" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RB002" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="USERA_USERB" Member="USERA" ThisKey="RB001" OtherKey="ID" Type="USERA" IsForeignKey="true" />
+      <Association Name="SYSMB_USERB" Member="SYSMB" ThisKey="RB002" OtherKey="ID" Type="SYSMB" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USERC" Member="USERC">
+    <Type Name="USERC">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RC001" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="RC002" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="USERA_USERC" Member="USERA" ThisKey="RC002" OtherKey="ID" Type="USERA" IsForeignKey="true" />
+      <Association Name="USEUA_USERC" Member="USEUA" ThisKey="RC001" OtherKey="ID" Type="USEUA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USEUA" Member="USEUA">
+    <Type Name="USEUA">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UA001" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA002" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA003" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA004" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="UA005" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UA006" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA007" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA008" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA009" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA010" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UA011" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UA012" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UA100" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UA101" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="USEUA_USEUB" Member="USEUB" ThisKey="ID" OtherKey="UB001" Type="USEUB" />
+      <Association Name="USEUA_SYSLA" Member="SYSLA" ThisKey="ID" OtherKey="LA004" Type="SYSLA" />
+      <Association Name="USEUA_SYSTB" Member="SYSTB" ThisKey="ID" OtherKey="TB001" Type="SYSTB" />
+      <Association Name="USEUA_USERC" Member="USERC" ThisKey="ID" OtherKey="RC001" Type="USERC" />
+    </Type>
+  </Table>
+</Database>

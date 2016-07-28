@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "MenuLeft";
+    Layout = "";
+}
+@Styles.Render("~/Css/Default")
+@Scripts.Render("~/Script/Default")
+<link href="~/Content/Assembly/jsTree/dist/themes/default/style.min.css" rel="stylesheet" />
+<script src="~/Content/Assembly/jsTree/dist/jstree.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $('#jstree_list').jstree({
+            'core': {
+                'multiple': false,//能否选中多个节点
+                'data': {
+                    'url': function (node) {
+                        return '/SystemSet/Menu/GetMenuList';
+                    },
+                    'data': function (node) {
+                        return { 'id': node.id };
+                    }
+                }
+            }
+        });
+        //选中事件
+        $('#jstree_list').on('changed.jstree', function (e, data) {
+            var i, j, r = [];
+            for (i = 0, j = data.selected.length; i < j; i++) {
+                //只做单个节点选中
+                r["text"] = data.instance.get_node(data.selected[i]).text;
+                r["id"] = data.instance.get_node(data.selected[i]).id;
+            }
+            parent.document.getElementById("main_right").src = "/SystemSet/Menu/MenuRight?id=" + r.id;
+        });
+
+    });
+</script>
+<style type="text/css">
+    .jstree-title {
+    height:20px;
+    line-height:20px;
+    text-align:center;
+    }
+</style>
+<div class="jstree-title">系统菜单</div>
+<div id="jstree_list">
+
+</div>
+

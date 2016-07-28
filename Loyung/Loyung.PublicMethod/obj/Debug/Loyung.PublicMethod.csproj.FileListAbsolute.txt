@@ -1,0 +1,8 @@
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\obj\Debug\Loyung.PublicMethod.csprojResolveAssemblyReference.cache
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\bin\Debug\Loyung.PublicMethod.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\bin\Debug\Loyung.PublicMethod.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\bin\Debug\Loyung.DBModels.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\bin\Debug\Loyung.DBModels.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\obj\Debug\Loyung.PublicMethod.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\obj\Debug\Loyung.PublicMethod.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.PublicMethod\bin\Debug\Newtonsoft.Json.dll

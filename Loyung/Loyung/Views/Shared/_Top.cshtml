@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Top";
+    if (Session["Userinfo"] == null)
+    {
+        Response.Redirect("/SysBase/Login");
+    }
+    var CurrentUser = (Userinfo)Session["Userinfo"];
+}
+
+<div class="logo-company">
+    <img src="~/Content/SysBase/images/logo.png" />
+</div>
+<div class="user-status">
+    <div class="user-board">
+        <div class="user-head">
+            <img src="~/Content/SysBase/images/head.jpg" />
+        </div>
+        <div class="user-name">
+            你好，@CurrentUser.UserName
+        </div>
+        <div class="user-daiban-box">
+            <a href="javascript:viod(0)">
+                <div class="user-daiban-icon icon-envelope-alt icon-3x"></div>
+                <div class="user-daiban">
+                    代办事项
+                </div>
+            </a>
+        </div>
+        <div class="user-account-box">
+            <a href="javascript:viod(0)">
+                <div class="user-account-icon icon-user icon-3x"></div>
+                <div class="user-account">
+                    账户管理
+                </div>
+            </a>
+        </div>
+        <div class="user-account-box">
+            <a href="/SysBase/LoginOut">
+                <div class="icon-off-icon icon-off icon-3x"></div>
+                <div class="user-off">
+                    注销系统
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+

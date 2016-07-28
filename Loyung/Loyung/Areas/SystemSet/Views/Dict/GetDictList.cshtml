@@ -1,0 +1,221 @@
+﻿@model  IEnumerable<Loyung.DBModels.SYSDA>
+@{
+    ViewBag.Title = "GetDictList";
+}
+<script type="text/javascript">
+    $(function () {
+        //删除字典分类
+        $(".delete").click(function () {
+            var $this = this;
+            var $boot_paginator = $('#boot_paginator');
+            layer.confirm("确认删除？", {
+                title: "提示", icon: 3,
+                yes: function (index, lapero) {
+                    layer.close(index);
+                    $.post("/SystemSet/Dict/DeleteDictInfo", { id: $($this).attr("infoid") }, function (msg) {
+                        if (msg == "true") {
+                            //异步刷新当前页
+                            $.post('/SystemSet/Dict/GetDictList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                $('#table_info').html(data);
+                                //更新当前页和总页数
+                                $boot_paginator.bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                            });
+                        }
+                        else {
+                            layer.open({ title: '提示', content: '信息删除异常', icon: 3 });
+                        }
+                    });
+
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+
+        });
+        //编辑字典分类
+        $(".edit").click(function () {
+            $("#info_id").val($(this).attr("infoid"));
+            $.ajax({
+                url: "/SystemSet/Dict/GetDictInfo",
+                data: { id: $("#info_id").val() },
+                success: function (msg) {
+                    for (var item in msg) {
+                        $("#" + item).val(msg[item]);
+                    }
+                }
+            });
+            layer.open({ type: 1, title: '字典信息编辑', content: $("#edit"), area: ['580px', '330px'] });
+
+        });
+        //查看明细
+        $(".view").click(function () {
+            var gourl = "/SystemSet/Dict/DictDetailList?id=" + $(this).attr("infoid");
+            layer.open({ type: 2, title: false, content: gourl, offset: ['130px', '23%'], area: ['72%', '500px'], shade: 0, move: false, shift: 2 });
+        });
+        //表单输入验证
+        $("#form_add").validate({
+            rules: {
+                dict_num: {
+                    required: true,
+                },
+                dict_name: {
+                    required: true,
+                }
+            },
+            messages: {
+                dict_num: {
+                    required: "编号不能为空",
+                },
+                dict_name: {
+                    required: "名称不能为空",
+                }
+            },
+            ignore: "#model_pid"//忽略不验证的元素
+        });
+        //表单提交事件
+        $("#savaInfo").click(function () {
+            var options = {
+                url: '/SystemSet/Dict/AddInfo',
+                type: 'POST',
+                beforeSubmit: function () {
+                    return $("#form_add").valid();
+                },
+                data: $("#form_add").serialize(),
+                success: function (msg) {
+                    if (msg == "true") {
+                        if ($("#info_id").val() == "#") {
+                            layer.open({
+                                title: '提示',
+                                content: '提交成功，是否继续添加？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    $('#form_add').resetForm();
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                        //新增
+                                        layer.open({ type: 1, title: '字典信息添加', content: $("#edit"), area: ['580px', '330px'] });
+                                    });
+                                },
+                                cancel: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                }
+                            });
+                        }
+                        else {
+
+                            //修改成功触发
+                            layer.open({
+                                title: '提示',
+                                content: '修改成功，是否返回列表？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictList', $("#form_search").formAppendJson({ page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        layer.open({ title: '提示', content: '添加失败，请仔细核对表单内容！', icon: 0 });
+                    }
+
+                }
+            };
+            $("#form_add").ajaxSubmit(options); return false;//防止原submit提交
+        });
+    });
+</script>
+<table class="table table-hover table-bordered">
+    <tr class="success">
+        <td class="text-center">编号</td>
+        <td class="text-center">名称</td>
+        <td class="text-center">备注</td>
+        <td class="text-center">操作</td>
+    </tr>
+    @{
+        if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DA002</td>
+                    <td>@item.DA001</td>
+                    <td>@item.DA003</td>
+                    <td class="text-center">
+                        <a class="view" infoid="@item.ID">
+                            <i title="查看明细" class="icon-eye-open iocn-16px"></i>
+                        </a>
+                        <a class="edit" infoid="@item.ID">
+                            <i title="编辑" class="icon-edit iocn-16px"></i>
+                        </a>
+                        <a class="delete" infoid="@item.ID">
+                            <i title="删除" class="icon-trash iocn-16px"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr class="table-none" ><td colspan="4">暂无数据</td></tr>
+        }
+    }
+</table>
+<input type="hidden" id="take_page" value="2">
+<input type="hidden" id="total_page" value="@ViewBag.TotalPage">
+<input type="hidden" id="current_page" value="@ViewBag.CurrentPage">
+
+<!--编辑新增-->
+<div id="edit" style="display:none; width:535px;">
+    <form id="form_add">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1"><label>编号：</label></div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="DA002" name="DA002" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1"><label>名称：</label></div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="DA001" name="DA001" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1"><label>备注：</label></div>
+            <div class="col-md-6">
+                <textarea rows="5" class="form-control" id="DA003" name="DA003"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-md-offset-6">
+                <input type="submit" class="btn btn-primary" id="savaInfo" value="保存" />
+            </div>
+            <div class="col-sm-2">
+                <input type="hidden" id="info_id" name="info_id" value="#" />
+            </div>
+        </div>
+    </form>
+</div>
+

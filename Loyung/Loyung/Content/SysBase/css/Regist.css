@@ -1,0 +1,28 @@
+﻿       body {
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            z-index: 0;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        .regist-box {
+            width: 500px;            
+        }
+
+        .regist-title {
+            height: 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-bottom: 1px solid #fff;
+        }
+
+        .row {
+            margin-top: 15px;
+        }

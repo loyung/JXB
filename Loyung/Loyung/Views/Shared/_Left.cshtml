@@ -1,0 +1,75 @@
+﻿@using Loyung.DBModels;
+@using Loyung.PublicMethod;
+
+@{
+    ViewBag.Title = "_Left";
+    LoyungDBDataContext DBHelper = new LoyungDBDataContext();
+    if (Session["Userinfo"] == null)
+    {
+        Response.Redirect("/SysBase/Login");
+    }
+    var CurrentUser = (Userinfo)Session["Userinfo"];
+}
+<script type="text/javascript">
+    $(function () {
+        $(".menu-item").css("display", "none");
+        //展开所选目录
+        $(".menu-list-title").click(function () {
+            if ($("#" + this.id).next(".menu-item").css("display") == "block") {
+                $(".menu-item").slideUp("fast");
+            }
+            else {
+                $(".menu-item").slideUp("fast");
+                $("#" + this.id).next(".menu-item").slideToggle("fast");
+            }
+        });
+        //添加选中效果
+        $(".menu-item-title").click(function () {
+            $(".menu-item-title").removeClass("menu-item-focus");
+            $(this).addClass("menu-item-focus");
+        });
+        //判断页面菜单
+        var actionurl = window.location.toString().split("/");
+        var action = "";
+        for (var item = 0; item < actionurl.length; item++) {
+            if (item >= 3)
+                action += "/" + actionurl[item];
+        }
+        $(".menu-item-li a[href='" + action + "']").parents(".menu-item").css("display", "block");
+        $(".menu-item-li a[href='" + action + "']").addClass("menu-item-focus");
+
+    });
+   
+</script>
+<div class="menu-title">
+    <div class="menu-title-uname">@CurrentUser.UserName</div>
+    <div class="menu-title-urole">角色：@CurrentUser.RoleName</div>
+    <div class="menu-title-logintime" style="display:none;">上次登录时间：2016-05-18</div>
+</div>
+<div class="menu-main">
+    <ul class="menu-list">
+        @{
+            IEnumerable<SYSMA> sysmas = new SystemBase().GetUserRoleMenu(CurrentUser.UserId);
+            foreach (var MenuList in sysmas.Where(mas => mas.MA005.Equals(-1)))
+            {
+                <li class="menu-list-li">
+                    <a href="javascript:void(0)" id="List_@MenuList.ID" class="menu-list-title"><span class="span-icon @MenuList.MA002"></span><span>@MenuList.MA001</span></a>
+                    <ul class="menu-item">
+                        @foreach (var MenuItem in sysmas.Where(mas => mas.MA005.Equals(MenuList.ID)))
+                        {
+                            <li class="menu-item-li"><a href="@MenuItem.MA003" id="Item_@MenuItem.ID" class="menu-item-title"><span class="span-icon @MenuItem.MA002"></span><span>@MenuItem.MA001</span></a></li>
+                        }
+                    </ul>
+                </li>
+            }
+        }
+        @*<li>
+                <a href="javascript:void(0)"><span class="span-icon icon-cog"></span><span>系统设置</span></a>
+                <ul class="menu-item">
+                    <li><a href="http://www.baidu.com"><span class="span-icon icon-book"></span><span>字典配置</span></a></li>
+                    <li><a href="http://www.baidu.com"><span class="span-icon icon-book"></span><span>类别配置</span></a></li>
+                </ul>
+            </li>*@
+
+    </ul>
+</div>

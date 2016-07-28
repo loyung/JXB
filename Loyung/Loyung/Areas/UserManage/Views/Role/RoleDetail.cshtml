@@ -1,0 +1,156 @@
+﻿@using Loyung.DBModels
+@model  Loyung.DBModels.USERA
+@{
+    Layout = null;
+    ViewBag.Title = "RoleDetail";
+}
+@Styles.Render("~/Css/Default")
+@Scripts.Render("~/Script/Default")
+@Scripts.Render("~/Script/layer")
+
+<script type="text/javascript">
+    $(function () {
+        //绑定系统模块值
+        $("#root_model").bindSelect("/UserManage/Role/GetRootModel", true,"所有模块");
+        //下拉框改变时更新页面显示内容
+        $("#root_model").change(function () {
+            if ($("#root_model").find("option:selected").val() == "-1") {
+                $(".limit-collect").show();
+            }
+            else {
+                var selectText = $("#root_model").find("option:selected").text();
+                $("h4:contains('" + selectText + "')").parent().show().siblings('.limit-collect').hide();
+            }
+        });
+        //提交权限修改
+        $("#savaInfo").click(function () {
+            var sysmbId = "";
+            $(".limit-collect input[type=checkbox][checked]").each(function (index, item) {
+                sysmbId += $(item).val() + ",";
+            });
+            //提交修改后权限
+            $.ajax({
+                type: "post",
+                url: "/UserManage/Role/EditRoleLimit",
+                data: "sysmbId=" + sysmbId + "&RoleId=" + getUrlParam("id"),
+                success: function (msg) {
+                    if (msg == "true") {
+                        layer.open({
+                            title: '提示',
+                            content: '提交成功，是否继续编辑？',
+                            icon: 3,
+                            btn: ['是', '否'],
+                            yes: function (index, layero) {
+                                layer.close(index);
+                                layer.closeAll('page');
+                            },
+                            cancel: function (index, layero) {
+                                layer.close(index);
+                                layer.closeAll('page'); 
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index); 
+                            }
+                        });
+                    }
+                    else {
+                        layer.open({content:'权限更新失败，请联系管理员！'});
+                    }
+                }
+            });
+        });
+        $("input[type=checkbox]").click(function () {
+            if ($(this).is(':checked')) {
+                $(this).attr("checked", true);
+            }
+            else { $(this).attr("checked", false);}
+        }
+            );
+    });
+</script>
+
+<div class="nav-bar">
+    <div class="nav-link">
+        <ul>
+            <li class=" icon-home icon-2x  nav-home"></li>
+            <li class="nav-li"><a href="javascript:void(0)">首页</a></li>
+            <li class="icon-angle-right icon-2x nav-angle"></li>
+            <li class="nav-li"><a href="javascript:void(0)">角色管理</a></li>
+            <li class="icon-angle-right icon-2x nav-angle"></li>
+            <li class="nav-li"><a href="javascript:void(0)">角色明细</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container" style=" max-width:none;">
+    <div class="row">
+        <div class="col-sm-12">角色名称：<label id="RA001">@Model.RA001</label></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">角色说明：<label id="RA002">@Model.RA002</label></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1">筛选：</div>
+        <div class="col-sm-2">
+            <select id="root_model" name="root_model" class="form-control"></select>
+        </div>
+    </div>
+    @{
+        var sysmaRoot = (IQueryable<SYSMA>)ViewBag.sysmaRoot;
+        var sysmas = (IQueryable<SYSMA>)ViewBag.sysmas;
+        var sysmbs = (IQueryable<SYSMB>)ViewBag.sysmbs;
+        var userbs = (IQueryable<USERB>)ViewBag.userbs;
+        if (sysmaRoot.Count() > 0)
+        {
+            var currentNum = 1;
+            foreach (var rootitem in sysmaRoot)
+            {
+                currentNum++;
+                var classindex = currentNum % 2 == 0 ? "callout-blue" : "callout-red";
+                <div class="limit-collect @classindex">
+                    <h4>@rootitem.MA001</h4>
+                    @if (sysmas.Count() > 0)
+                    {
+                        <ul>
+                            @foreach (var sysmaitem in sysmas.Where(ma => ma.MA005.Equals(rootitem.ID)))
+                            {
+                                <li>
+                                    @sysmaitem.MA001:
+                                    @if (sysmbs.Count() > 0)
+                                    {
+                                        foreach (var sysmbitem in sysmbs.Where(mb => mb.MB001.Equals(sysmaitem.ID)))
+                                        {
+                                            if (userbs != null && userbs.Count() > 0)
+                                            {
+                                                var userb = userbs.FirstOrDefault(rb => rb.RB002.Equals(sysmbitem.ID));
+                                                if (userb == null)
+                                                {
+                                                    <span><input type="checkbox" value="@sysmbitem.ID" />@sysmbitem.MB002</span>
+                                                }
+                                                else
+                                                {
+                                                    <span><input type="checkbox" checked="checked" value="@sysmbitem.ID" />@sysmbitem.MB002</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span><input type="checkbox" value="@sysmbitem.ID" />@sysmbitem.MB002</span>
+                                            }
+                                        }
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                </div>
+            }
+
+        }
+
+    }
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+            <input type="button" class="btn btn-primary" id="savaInfo" value="保存"  />
+        </div>
+    </div>
+</div>

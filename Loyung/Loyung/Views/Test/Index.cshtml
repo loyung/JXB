@@ -1,0 +1,35 @@
+﻿@using Loyung.DBModels
+@{
+    LoyungDBDataContext db = new LoyungDBDataContext();
+    ViewBag.Title = "Index";
+    Layout = "";
+}
+<h2>程序测试专用</h2>
+@{
+    //多表修改
+    //USEUA useua = db.USEUA.FirstOrDefault(ua => ua.ID.Equals(4));
+    //useua.UA001 = "test";
+    //useua.UA002 = "test";
+    //USERC userc = useua.USERC.FirstOrDefault();
+    //userc.RC001 = useua.ID;
+    //userc.RC002 = 2;
+    //useua.USERC.Add(userc);
+    ////db.USEUA.InsertOnSubmit(useua);
+    //db.SubmitChanges();
+    //多表添加
+    //USEUA useua = new USEUA();
+    //useua.UA001 = "test";
+    //useua.UA002 = "test";
+    //USEUB useub = new USEUB();
+    //useub.UB001 = 1;
+    //useub.UB002 = "test";
+    //USERC userc = new USERC();
+    //userc.RC001 = useua.ID;
+    //userc.RC002 = 2;
+    //useua.USEUB.Add(useub);
+    //useua.USERC.Add(userc);
+    //db.USEUA.InsertOnSubmit(useua);
+    //db.SubmitChanges();
+}
+
+

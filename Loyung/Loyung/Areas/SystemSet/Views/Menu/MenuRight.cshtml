@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "MenuRight";
+    Layout = "";
+}
+@Styles.Render("~/Css/Default")
+@Scripts.Render("~/Script/Default")
+@Scripts.Render("~/Script/validate")
+@Scripts.Render("~/Script/layer")
+<script type="text/javascript">
+    $(function () {
+        //绑定父级模块值
+        $("#model_pid").bindSelect("/SystemSet/Menu/GetAllModel",true,"根节点");
+        //表单提交事件
+        $("#saveInfo").click(function () {
+            var options = {
+                url: '/SystemSet/Menu/AddInfo',
+                type: 'POST',
+                beforeSubmit: function () {
+                    return $("#form_info").valid();
+                },
+                data: $("#form_info").serialize(),
+                success: function (msg) {
+                    if (msg == "true") {
+                        layer.open({
+                            title: '提示',
+                            content: '提交成功，是否继续添加？',
+                            icon: 3,
+                            btn: ['是', '否'],
+                            yes: function (index, layero) {
+                                layer.close(index);
+                                parent.location.href = '/SystemSet/Menu/MenuMain';
+                            }
+                        });
+                    }
+                    else {
+                        layer.open({ title: '提示', content: '添加失败，请仔细核对表单内容！', icon: 0 });
+                    }
+                }
+            };
+            $("#form_info").ajaxSubmit(options); return false;//防止原submit提交
+        });
+        //表单输入验证
+        $("#form_info").validate({
+            rules: {
+                model_name: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 10,
+                },
+                model_url: {
+                    required: true,
+                }
+            },
+            messages: {
+                model_name: {
+                    required: "模块名不能为空",
+                    minlength: "模块名的最小长度为1",
+                    maxlength: "模块名长度不能超过10个字符",
+                },
+                model_url: {
+                    required: "模块url不能为空",
+                }
+            },
+            ignore: "#model_pid"//忽略不验证的元素
+        });
+        //选择Ico
+        $("#select_ico").click(function () {
+            layerico = layer.open({ type: 1, title: '图标选择', content: $('#_Ico'), area: ['550px', '300px'] });
+        });
+        //绑定选项
+        if (getUrlParam("id") != null) {
+            $.ajax({
+                url: '/SystemSet/Menu/BindInfo',
+                data: { id: getUrlParam("id") },
+                success: function (msg) {
+                    if (msg != null) {
+                        $("#model_pid").find("option[value='{0}']".format(msg.MA005)).attr("selected", true);
+                        $("#model_name").val(msg.MA001);
+                        $("#model_url").val(msg.MA003);
+                        $("#model_order").val(msg.MA004);
+                        $("#model_ico").val(msg.MA002);
+                        $("#ico_view").attr("class", msg.MA002 + " icon-2x");
+                        $("#model_mark").val(msg.MA006);
+                    }
+                }
+            });
+            $("#info_id").val(getUrlParam("id"));
+        }
+        //删除信息
+        $("#btn_delete").click(function () {
+            if ($("#info_id").val() != "#") {
+                layer.open({
+                    title: '提示', content: '是否确认删除？确认则会删除该模块相关联功能权限。', icon: 3,
+                    yes: function (index, layero) {
+                        layer.close(index);
+                        $.ajax({
+                            url: "/SystemSet/Menu/DeleteInfo?info_id=" + $("#info_id").val(),
+                            success: function (msg) {
+                                if (msg == "true") {
+                                    parent.location.reload();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                layer.open({title:'提示',content:"请选择删除项",icon:0});
+            }
+        });
+
+    });
+</script>
+<form id="form_info">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 ">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary" id="btn_add">
+                        <input type="checkbox" autocomplete="off" onchange="location.href = '/SystemSet/Menu/MenuRight'"> 新增
+                    </label>
+                    <label class="btn btn-primary" id="btn_delete">
+                        <input type="checkbox" autocomplete="off"> 删除
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_pid">父级模块：</label>
+            </div>
+            <div class="col-sm-5">
+                <select class="form-control" id="model_pid" name="model_pid"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_name">模块名称：</label>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="model_name" name="model_name">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_url">模块URL：</label>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="model_url" name="model_url" placeholder="例如:/{Areas}/{Controllers}/{Action}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_order">模块排序：</label>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="model_order" name="model_order">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_ico">模块图标：</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="button" class="btn btn-info" id="select_ico" value="选择ico" />
+            </div>
+            <div class="col-sm-1">
+                <label for="model_ico">预览</label>
+            </div>
+            <div class="col-sm-1">
+                <i id="ico_view"></i>
+            </div>
+            <div class="col-sm-2">
+                <input type="hidden" class="form-control" id="model_ico" name="model_ico" value="icon-th-large">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="text-align:right;">
+                <label for="model_mark">模块备注：</label>
+            </div>
+            <div class="col-sm-5">
+                <textarea class="form-control" id="model_mark" name="model_mark" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-6">
+                <input type="submit" value="保存" class="btn btn-primary" id="saveInfo">
+            </div>
+            <div class="col-sm-2">
+                <input type="hidden" id="info_id" name="info_id" value="#" />
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Ico")
+</form>
+

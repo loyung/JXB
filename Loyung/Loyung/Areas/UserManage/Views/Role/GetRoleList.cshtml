@@ -1,0 +1,208 @@
+﻿@model  IEnumerable<Loyung.DBModels.USERA>
+@{
+    ViewBag.Title = "GetRoleList";
+}
+<script type="text/javascript">
+    $(function () {      
+        //删除
+        $(".delete").click(function () {
+            var $this = this;
+            var $boot_paginator = $('#boot_paginator');
+            layer.confirm("确认删除？", {
+                title: "提示", icon: 3,
+                yes: function (index, lapero) {
+                    layer.close(index);
+                    $.post("/UserManage/Role/DeleteRoleInfo", { id: $($this).attr("infoid") }, function (msg) {
+                        if (msg == "true") {
+                            //异步刷新当前页
+                            $.post('/UserManage/Role/GetRoleList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                $('#table_info').html(data);
+                                //更新当前页和总页数
+                                $boot_paginator.bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                            });
+                        }
+                        else {
+                            layer.open({ title: '提示', content: '信息删除异常', icon: 3 });
+                        }
+                    });
+
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+
+        });
+        //编辑
+        $(".edit").click(function () {
+            $("#info_id").val($(this).attr("infoid"));
+            $.ajax({
+                url: "/UserManage/Role/GetRoleInfo",
+                data: { id: $("#info_id").val() },
+                success: function (msg) {
+                    for (var item in msg) {
+                        $("#" + item).val(msg[item]);
+                    }
+                }
+            });
+            layer.open({ type: 1, title: '角色信息编辑', content: $("#edit"), area: ['580px', '330px'] });
+
+        });
+        //查看明细
+        $(".view").click(function () {
+            var gourl = "/UserManage/Role/RoleDetail?id=" + $(this).attr("infoid");
+            var layer_rolelimit = layer.open({ type: 2, title: false, content: gourl, offset: ['130px', '23%'], area: ['72%', '500px'], shade: 0, move: false, shift: 2 });
+        });
+        //表单输入验证
+        $("#form_add").validate({
+            rules: {
+                RA001: {
+                    required: true,
+                },
+               
+            },
+            messages: {
+                RA001: {
+                    required: "角色名不能为空",
+                },
+            },
+            ignore: "#model_pid"//忽略不验证的元素
+        });
+        //表单提交事件
+        $("#savaInfo").click(function () {
+            var options = {
+                url: '/UserManage/Role/AddInfo',
+                type: 'POST',
+                beforeSubmit: function () {
+                    return $("#form_add").valid();
+                },
+                data: $("#form_add").serialize(),
+                success: function (msg) {
+                    if (msg == "true") {
+                        if ($("#info_id").val() == "#") {
+                            layer.open({
+                                title: '提示',
+                                content: '提交成功，是否继续添加？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    $('#form_add').resetForm();
+                                    //异步刷新当前页
+                                    $.post('/UserManage/Role/GetRoleList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                        //新增
+                                        layer.open({ type: 1, title: '角色信息添加', content: $("#edit"), area: ['580px', '330px'] });
+                                    });
+                                },
+                                cancel: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/UserManage/Role/GetRoleList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                }
+                            });
+                        }
+                        else {
+
+                            //修改成功触发
+                            layer.open({
+                                title: '提示',
+                                content: '修改成功，是否返回列表？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/UserManage/Role/GetRoleList', $("#form_search").formAppendJson({ page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        layer.open({ title: '提示', content: '添加失败，请仔细核对表单内容！', icon: 0 });
+                    }
+
+                }
+            };
+            $("#form_add").ajaxSubmit(options); return false;//防止原submit提交
+        });
+    });
+</script>
+<table class="table table-hover table-bordered">
+    <tr class="success">
+        <td class="text-center">名称</td>
+        <td class="text-center">备注</td>
+        <td class="text-center">操作</td>
+    </tr>
+    @{
+        if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.RA001</td>
+                    <td>@item.RA002</td>
+                    <td class="text-center">
+                        <a class="view" infoid="@item.ID">
+                            <i title="查看明细" class="icon-eye-open iocn-16px"></i>
+                        </a>
+                        <a class="edit" infoid="@item.ID">
+                            <i title="编辑" class="icon-edit iocn-16px"></i>
+                        </a>
+                        <a class="delete" infoid="@item.ID">
+                            <i title="删除" class="icon-trash iocn-16px"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr class="table-none"><td colspan="4">暂无数据</td></tr>
+        }
+    }
+</table>
+<input type="hidden" id="take_page" value="2">
+<input type="hidden" id="total_page" value="@ViewBag.TotalPage">
+<input type="hidden" id="current_page" value="@ViewBag.CurrentPage">
+
+<!--编辑新增-->
+<div id="edit" style="display:none; width:535px;">
+    <form id="form_add">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1"><label>名称：</label></div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="RA001" name="RA001" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1"><label>说明：</label></div>
+            <div class="col-md-6">
+                <textarea class="form-control" id="RA002" name="RA002" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-md-offset-5">
+                <input type="submit" class="btn btn-primary" id="savaInfo" value="保存" />
+            </div>
+            <div class="col-sm-2">
+                <input type="hidden" id="info_id" name="info_id" value="#" />
+            </div>
+        </div>
+    </form>
+</div>
+

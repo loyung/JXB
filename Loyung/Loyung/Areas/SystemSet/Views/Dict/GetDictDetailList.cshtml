@@ -1,0 +1,201 @@
+﻿@model  IEnumerable<Loyung.DBModels.SYSDB>
+@{
+    ViewBag.Title = "GetDictDetailList";
+}
+<script type="text/javascript">
+    $(function () {
+        //删除字典明细
+        $(".delete").click(function () {
+            $.post("/SystemSet/Dict/DeleteDictDetInfo", { id: $(this).attr("infoid") }, function (msg) {
+                if (msg == "true") {
+                    //异步刷新当前页
+                    $.post('/SystemSet/Dict/GetDictDetailList', { id: $("#DB001").val(), page: $("#current_page").val(), take: $("#take_page").val() }, function (data) {
+                        $('#table_info').html(data);
+                        //更新当前页和总页数
+                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                    });
+                }
+                else {
+                    layer.open({ title: '提示', content: '信息删除异常', icon: 3 });
+                }
+            });
+        });
+        //编辑字典明细
+        $(".edit").click(function () {
+            $("#info_id").val($(this).attr("infoid"));
+            $.ajax({
+                url: "/SystemSet/Dict/GetDictDetInfo",
+                data: { id: $("#info_id").val() },
+                success: function (msg) {
+                    for (var item in msg) {
+                        $("#" + item).val(msg[item]);
+                    }
+                }
+            });
+            layer.open({ type: 1, title: '字典明细编辑', content: $("#edit"), area: ['580px', '330px'] });
+        });
+        //表单输入验证
+        $("#form_detail_add").validate({
+            rules: {
+                dict_num: {
+                    required: true,
+                },
+                dict_name: {
+                    required: true,
+                }
+            },
+            messages: {
+                dict_num: {
+                    required: "字典编号不能为空",
+                },
+                dict_name: {
+                    required: "字典名称不能为空",
+                }
+            },
+            ignore: "#model_pid"//忽略不验证的元素
+        });
+        //表单提交事件
+        $("#savaInfo").click(function () {
+            var options = {
+                url: '/SystemSet/Dict/AddDetailInfo',
+                type: 'POST',
+                beforeSubmit: function () {
+                    return $("#form_detail_add").valid();
+                },
+                data: $("#form_detail_add").serialize(),
+                success: function (msg) {
+                    if (msg == "true") {
+                        if ($("#info_id").val() == "#") {
+                            layer.open({
+                                title: '提示',
+                                content: '提交成功，是否继续添加？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    $('#form_detail_add').resetForm();
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictDetailList', { id: $("#DB001").val(), page: $("#current_page").val(), take: $("#take_page").val() }, function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                        //新增
+                                        layer.open({ type: 1, title: '字典明细添加', content: $("#edit"), area: ['580px', '330px'] });
+                                    });
+
+                                },
+                                cancel: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictDetailList', { id: $("#DB001").val(), page: $("#current_page").val(), take: $("#take_page").val() }, function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            //修改成功触发
+                            layer.open({
+                                title: '提示',
+                                content: '修改成功，是否返回列表？',
+                                icon: 3,
+                                btn: ['是', '否'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.closeAll('page');
+                                    //异步刷新当前页
+                                    $.post('/SystemSet/Dict/GetDictDetailList', { id: $("#DB001").val(), page: $("#current_page").val(), take: $("#take_page").val() }, function (data) {
+                                        $('#table_info').html(data);
+                                        //更新当前页和总页数
+                                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                                    });
+                                },
+                                cancel: function (index, layero) {
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        layer.open({ title: '提示', content: '添加失败，可能存在重复录入，请仔细核对表单内容！', icon: 0 });
+                    }
+
+                }
+            };
+            $("#form_detail_add").ajaxSubmit(options); return false;//防止原submit提交
+        });
+    });
+</script>
+<table class="table table-hover table-bordered">
+    <tr class="success">
+        <td>编号</td>
+        <td>名称</td>
+        <td>备注</td>
+        <td>操作</td>
+    </tr>
+    @{
+        if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DB002</td>
+                    <td>@item.DB003</td>
+                    <td>@item.DB004</td>
+                    <td>
+                        <a class="edit" infoid="@item.ID">
+                            <i title="编辑" class="icon-edit iocn-16px"></i>
+                        </a>
+                        <a class="delete" infoid="@item.ID">
+                            <i title="删除" class="icon-trash iocn-16px"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+           <tr class="table-none" ><td colspan="4">暂无数据</td></tr>
+        }
+}
+</table>
+<input type="hidden" id="take_page" value="2">
+<input type="hidden" id="total_page" value="@ViewBag.TotalPage">
+<input type="hidden" id="current_page" value="@ViewBag.CurrentPage">
+<!--编辑新增-->
+<div id="edit" style="display:none; width:535px;">
+    <form id="form_detail_add">
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-1"><label>编号：</label></div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="DB002" name="DB002" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-1"><label>名称：</label></div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="DB003" name="DB003" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-1"><label>备注：</label></div>
+            <div class="col-sm-6">
+                <textarea rows="5" class="form-control" id="DB004" name="DB004"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-sm-offset-6">
+                <input type="submit" class="btn btn-primary" id="savaInfo" value="保存" />
+            </div>
+            <div class="col-sm-2">
+                <input type="hidden" id="info_id" name="info_id" value="#" />
+                <input type="hidden" id="DB001" name="DB001" value="@ViewBag.Pid" />
+            </div>
+        </div>
+    </form>
+</div>
+
+

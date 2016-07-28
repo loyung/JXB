@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = "用户注册";
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>用户注册</title>
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    @Styles.Render("~/Css/Default")
+    @Styles.Render("~/Css/Regist")
+    @Scripts.Render("~/Script/Default")
+    @Scripts.Render("~/Script/validate")
+    @Scripts.Render("~/Script/layer")
+    <script type="text/javascript">
+        $(function () {
+            //获取验证码
+            $("#ImgvalidateCode").attr("src", "/SysBase/GetValidateCode?time=" + Math.random());
+            $("#ImgvalidateCode").click(function () {
+                $("#ImgvalidateCode").attr("src", "/SysBase/GetValidateCode?time=" + Math.random());
+            });
+            //表单提交事件
+            $("#signUp").click(function () {
+                var options = {
+                    url: '/SysBase/AddUser',
+                    type: 'POST',
+                    beforeSubmit: function () {
+                        return $("#signupForm").valid();
+                    },
+                    data: $("#signupForm").serialize(),
+                    success: function (msg) {
+                        if (msg == "true") {
+                            layer.open({
+                                title: '是否登录',
+                                content: '恭喜注册成功,是否现在登录？',
+                                icon: 3,
+                                btn: ['登录', '取消'],
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                    layer.open({
+                                        type: 1, title: '登录', content: $('#Login'), area: ['550px','300px'],zIndex:1
+                                    });
+                                },
+                                zIndex: 1
+                            });
+                        }
+                    }
+                };
+                $("#signupForm").ajaxSubmit(options); return false;//防止原submit提交
+            });
+
+            //表单输入验证
+            $("#signupForm").validate({
+                rules: {
+                    inputUserName: {
+                        //required: true,
+                        minlength: 6,
+                        maxlength: 15,
+                        remote: {
+                            type: "POST",
+                            url: "/SysBase/CheckUserName",
+                            data: {
+                                userName: function () { return $("#inputUserName").val(); }
+                            },
+                        },
+                    },
+                    inputMobile: {
+                        //required: true,
+                        isMobile: true
+                    },
+                    inputEmail: {
+                        //required: true,
+                        email: true,
+                    },
+                    inputPwd: {
+                        //required: true,
+                        minlength: 6,
+                        maxlength: 20,
+                        isPwd: true,
+                    },
+                    inputPwd2: {
+                        //required: true,
+                        isPwd: true,
+                        equalTo: "#inputPwd"
+                    },
+                    validateCode: {
+                        //required: true,
+                        maxlength: 4,
+                        remote: {
+                            type: "POST",
+                            url: "/SysBase/CheckCode",
+                            data: {
+                                validateCode: function () { return $("#validateCode").val(); }
+                            },
+                        },
+                    }
+                },
+                messages: {
+                    username: {
+                        remote: "用户名已存在",
+                        required: "用户名不能为空",
+                        minlength: "用户名的最小长度为2",
+                        maxlength: "密码长度不能超过15个字符",
+                    },
+                    inputPwd: {
+                        required: "密码不能为空",
+                        minlength: "密码长度不能少于6个字符",
+                        maxlength: "密码长度不能超过20个字符",
+                    },
+                    inputPwd2: {
+                        required: "确认密码不能为空",
+                        equalTo: "确认密码和密码不一致",
+                    },
+                    inputMobile: {
+                        required: "手机号码不能为空"
+                    },
+                    validateCode: {
+                        required: "验证码不能为空",
+                        remote: "验证码错误",
+                    }
+                },
+                ignore: ".ignore"//忽略不验证的元素
+            });
+            //登录验证
+            $("#LoginForm").validate({
+                rules: {
+                    LoginUserName: { required: true },
+                    LoginPwd: { required: true },
+                },
+                messages: {
+                    LoginUserName: { required: "用户名不能为空" },
+                    LoginPwd: { required: "密码不能为空" },
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <img id="stretch" src="~/Content/SysBase/images/bg01.jpg" style=" width:100%; height:100%;position: absolute;z-index: -1;" />
+    <div class="container">
+        <div class="regist-box vertical-center round-rectangle">
+            <form class="form-horizontal" id="signupForm">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1 regist-title">欢迎注册本站会员</div>
+                </div>
+                <div class="row">
+                    <label for="inputUserName" class="col-sm-3 col-md-offset-1" style="text-align:right;">用户名：</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="inputUserName" name="inputUserName" placeholder="输入用户名" focusin="请输入用户名" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="inputMobile" class="col-sm-3 col-md-offset-1" style="text-align:right;">手机：</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="inputMobile" name="inputMobile" placeholder="输入手机号码">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="inputEmail" class="col-sm-3 col-md-offset-1" style="text-align:right;">邮箱：</label>
+                    <div class="col-sm-7">
+                        <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="输入邮箱地址">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="inputPwd" class="col-sm-3 col-md-offset-1" style="text-align:right;">密码：</label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" id="inputPwd" name="inputPwd" placeholder="输入密码">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="inputPwd2" class="col-sm-3 col-md-offset-1" style="text-align:right;">确认密码：</label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" id="inputPwd2" name="inputPwd2" placeholder="确认密码">
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="inputValidate" class="col-sm-3 col-md-offset-1" style="text-align:right;">验证码：</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="validateCode" name="validateCode" placeholder="验证码">
+                    </div>
+                    <div class="col-sm-3">
+                        <img id="ImgvalidateCode" style="cursor:pointer;" title="看不清，点击刷新">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-5"><input type="submit" id="signUp" class="btn btn-primary" value="注册" /></div>
+                </div>
+                <div class="row"></div>
+            </form>
+        </div>
+        <!---用户登录--->
+        <div class="regist-box vertical-center round-rectangle" style="display:none;" id="Login">
+            <form class="form-horizontal" id="LoginForm">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1 regist-title">欢迎登录本站</div>
+                </div>
+                <div class="row">
+                    <label for="LoginUserName" class="col-sm-3 col-md-offset-1" style="text-align:right;">用户名：</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="LoginUserName" name="LoginUserName" placeholder="输入用户名" focusin="请输入用户名" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="LoginPwd" class="col-sm-3 col-md-offset-1" style="text-align:right;">密码：</label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" id="LoginPwd" name="LoginPwd" placeholder="输入密码">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-5"><input type="submit" id="Login" class="btn btn-primary" value="登录" /></div>
+                </div>
+                <div class="row"></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

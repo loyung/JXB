@@ -1,0 +1,3 @@
+﻿关于此框架使用注意事项：
+1.对于原生态<select>标记，可以在页面加载完使用bindSelect绑定option，如果需要设定默认选中项需配置selectvalue属性，该值为选中option的值。
+2.对于原生态input:[type=radio]的单选按钮，指定默认选中项需配置radiovalue，该值为选中项value为值。

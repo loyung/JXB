@@ -1,0 +1,110 @@
+﻿@model  IEnumerable<Loyung.DBModels.SYSDB>
+@{
+    ViewBag.Title = "DictDetailList";
+    Layout = "";
+}
+@Styles.Render("~/Css/Default")
+@Scripts.Render("~/Script/Default")
+@Scripts.Render("~/Script/validate")
+@Scripts.Render("~/Script/layer")
+@Scripts.Render("~/Script/BootPaginator")
+<script type="text/javascript">
+    $(function () {
+        //查询搜索
+        $("#btn_search").click(function () {
+            var search_options = {
+                url: '/SystemSet/Dict/DictDetailList?id=' + $("#DB001").val(),
+                type: 'POST',
+                data: $("#form_search").serialize(),
+                success: function (msg) {
+                    //异步刷新当前页
+                    $.post('/SystemSet/Dict/GetDictDetailList', $("#form_search").formAppendJson({ id: $("#DB001").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                        $('#table_info').html(data);
+                        //更新当前页和总页数
+                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+
+                    });
+                },
+            };
+            $("#form_search").ajaxSubmit(search_options); return false;//防止原submit提交
+        });
+        //查询显示
+        $("#btn_filter").click(function () {
+            if ($("#search_form").is(":hidden")) {
+                $("#search_form").show();
+                $("#btn_filter").val("收起");
+            }
+            else {
+                $("#search_form").hide();
+                $('#form_search').resetForm();
+                $("#btn_filter").val("筛选");
+            }
+        });
+        //数据分页
+        var options = {
+            currentPage: $('#current_page').val(),
+            totalPages: $('#total_page').val(),
+            onPageClicked: function (event, originalEvent, type, page) {
+                $.post('/SystemSet/Dict/GetDictDetailList', { id: $("#DB001").val(), page: page, take: $("#take_page").val() }, function (data) {
+                    $('#table_info').html(data);
+                    //更新当前页和总页数
+                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                });
+            },
+        }
+        //注册分页
+       $('#boot_paginator').bootstrapPaginator(options);
+        //新增字典明细
+        $("#btn_add").click(function () {
+            $('#form_dict_detail').resetForm();
+            var titletext = "@ViewBag.DA001" + "明细添加";
+            layer.open({ type: 1, title: titletext, content: $("#edit"), area: ['580px', '330px'] });
+        });
+    });
+
+</script>
+<div class="nav-bar">
+    <div class="nav-link">
+        <ul>
+            <li class=" icon-home icon-2x  nav-home"></li>
+            <li class="nav-li"><a href="javascript:void(0)">首页</a></li>
+            <li class="icon-angle-right icon-2x nav-angle"></li>
+            <li class="nav-li"><a href="javascript:void(0)">字典管理</a></li>
+            <li class="icon-angle-right icon-2x nav-angle"></li>
+            <li class="nav-li"><a href="javascript:void(0)">@ViewBag.DA001</a></li>
+        </ul>
+    </div>
+</div>
+<div class="container" style=" max-width:none;">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary" id="btn_add">
+                    <input type="checkbox" autocomplete="off"> 新增
+                </label>
+                <label class="btn btn-primary" id="btn_filter">
+                    <input type="checkbox" autocomplete="off"> 筛选
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="search_form" style="display:none;">
+        <form id="form_search">
+            <div class="col-sm-2">
+                <label for="search_DB002">明细编号：</label>
+            </div>
+            <div class="col-sm-3"><input type="text" class="form-control" id="search_DB002" name="search_DB002" /></div>
+            <div class="col-sm-2">
+                <label for="search_DB003">明细名称：</label>
+            </div>
+            <div class="col-sm-3"><input type="text" class="form-control" id="search_DB003" name="search_DB003" /></div>
+            <div class="col-sm-2"><input type="submit" class="btn btn-primary" id="btn_search" value="查询" /></div>
+        </form>
+    </div>
+    <div id="table_info">
+      @Html.Action("GetDictDetailList", new { id = ViewBag.Pid })
+    </div>
+    <!--分页-->
+    <div id="boot_paginator">
+    </div>
+</div>

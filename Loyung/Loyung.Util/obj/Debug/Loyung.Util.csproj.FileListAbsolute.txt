@@ -1,0 +1,5 @@
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.Util\obj\Debug\Loyung.Util.csprojResolveAssemblyReference.cache
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.Util\bin\Debug\Loyung.Util.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.Util\bin\Debug\Loyung.Util.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.Util\obj\Debug\Loyung.Util.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.Util\obj\Debug\Loyung.Util.pdb

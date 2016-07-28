@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "UserInfo";
+    Layout = "";
+}
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    @Styles.Render("~/Css/Default")
+    @Scripts.Render("~/Script/Default")
+    @Scripts.Render("~/Script/validate")
+    @Scripts.Render("~/Script/layer")
+
+    <script type="text/javascript">
+        $(function () {
+            //加载系统角色
+            $("#RC002").bindSelect("/UserManage/UserManage/GetAllRole", false);
+            //初始化页面数据
+            if (getUrlParam("id") != null)
+            {
+                $("#info_id").val(getUrlParam("id"));
+                $.ajax({
+                    url: "/UserManage/UserManage/GetUserInfo?id=" + getUrlParam("id"),
+                    type: "post",
+                    dataType: "json",
+                    success: function (msg) {
+                        for (var item in msg) {                          
+                            $('#'+item).BindControl(msg[item]);
+                        }
+                    }
+                });
+            }
+            //表单提交事件
+            $("#savaInfo").click(function () {
+                var options = {
+                    url: '/UserManage/UserManage/AddUserInfo',
+                    type: 'POST',
+                    beforeSubmit: function () {
+                        return $("#form_add").valid();
+                    },
+                    data: $("#form_add").serialize(),
+                    success: function (msg) {
+                        if (msg == "true") {
+                            layer.open({
+                            title: '提示',
+                            content: '提交成功，是否返回列表？',
+                            icon: 3,
+                            btn: ['是', '否'],
+                            yes: function (index, layero) {
+                                layer.close(index);
+                                layer.closeAll('page');
+                                $('#form_add').resetForm();
+                                //刷新列表
+                                window.parent.UpdatePage();
+                                //显示列表
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            },
+                            cancel: function (index, layero) {
+                                layer.close(index);
+                                layer.closeAll('page');
+                            }
+                        });
+
+
+
+                        }
+                        else {
+                            layer.open({ title: '提示', content: '修改失败，请仔细核对表单内容！', icon: 0 });
+                        }
+                    }
+                };
+                $("#form_add").ajaxSubmit(options); return false;//防止原submit提交
+            });
+
+            //表单验证
+            $("#form_add").validate({
+                rules: {
+                    UA001: {
+                        required: true,
+                    },
+                    UA006: {
+                        isMobile: true,
+                    },
+                    UA007: {
+                        isTel: true,
+                    },
+                    UA008: {
+                        email: true,
+                    },
+                    UA009: {
+                        isIdCardNo: true,
+                    }
+
+                },
+                messages: {
+                    UA001: {
+                        required: "用户名不能为空",
+                    },
+                },
+                ignore: ""//忽略不验证的元素
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="nav-link">
+            <ul>
+                <li class=" icon-home icon-2x  nav-home"></li>
+                <li class="nav-li"><a href="javascript:void(0)">首页</a></li>
+                <li class="icon-angle-right icon-2x nav-angle"></li>
+                <li class="nav-li"><a href="javascript:void(0)">用户管理</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--编辑新增-->
+    <div id="edit" class="container" style="max-width:none; max-height:500px;">
+        <form id="form_add">
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>用户名：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA001" name="UA001"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>密码：</label></div>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control" id="UB003" name="UB003" placeholder="●●●●●●" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>昵称：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA002" name="UA002"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>姓名：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA003" name="UA003"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>性别：</label></div>
+                <div class="col-sm-6">
+                    <input type="radio" id="UA004" name="UA004" value="男" />男
+                    <input type="radio" id="UA004" name="UA004" value="女" />女
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>出生日期：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control laydate-icon" id="UA005" name="UA005" onclick="laydate()"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>手机号码：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA006" name="UA006"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>电话号码：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA007" name="UA007"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>邮箱：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA008" name="UA008"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>身份证号：</label></div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="UA009" name="UA009"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>联系地址：</label></div>
+                <div class="col-sm-6">
+                    <textarea class="form-control" id="UA010" name="UA010" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>用户角色：</label></div>
+                <div class="col-sm-6">
+                    <select class="form-control" id="RC002" name="RC002"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1"><label>是否冻结：</label></div>
+                <div class="col-sm-6">
+                    <input type="radio" name="UA012" value="True"  />已冻结
+                    <input type="radio" name="UA012" value="False"  />未冻结
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-sm-offset-5">
+                    <input type="submit" class="btn btn-primary" id="savaInfo" value="保存" />
+                </div>
+                <div class="col-sm-2">
+                    <input type="hidden" id="info_id" name="info_id" value="#"  />
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

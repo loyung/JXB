@@ -1,0 +1,122 @@
+﻿@model  IEnumerable<Loyung.DBModels.USEUA>
+@{
+    ViewBag.Title = "UserList";
+}
+@Styles.Render("~/Css/Default")
+@Scripts.Render("~/Script/Default")
+@Scripts.Render("~/Script/validate")
+@Scripts.Render("~/Script/layer")
+@Scripts.Render("~/Script/BootPaginator")
+
+<script type="text/javascript">
+    $(function () {
+        //查询搜索
+        $("#btn_search").click(function () {
+            var search_options = {
+                url: '/UserManage/UserManage/GetUserList',
+                type: 'POST',
+                data: $("#form_search").serialize(),
+                success: function (msg) {
+                    //异步刷新当前页
+                    $.post('/UserManage/UserManage/GetUserList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                        $('#table_info').html(data);
+                        //更新当前页和总页数
+                        $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+
+                    });
+                },
+            };
+            $("#form_search").ajaxSubmit(search_options); return false;//防止原submit提交
+        });
+        //查询显示
+        $("#btn_filter").click(function () {
+            if ($("#search_form").is(":hidden")) {
+                $("#search_form").show();
+                $("#btn_filter").val("收起").toggleClass("active");
+            }
+            else {
+                $("#search_form").hide();
+                $('#form_search').resetForm();
+                $("#btn_filter").val("筛选").toggleClass("active");
+            }
+        });
+        //数据分页
+        var page_options = {
+            currentPage: $('#current_page').val(),
+            totalPages: $('#total_page').val(),
+            onPageClicked: function (event, originalEvent, type, page) {
+                $.post('/UserManage/UserManage/GetUserList', $("#form_search").formAppendJson({ page: page, take: $("#take_page").val() }), function (data) {
+                    $('#table_info').html(data);
+                    //更新当前页和总页数
+                    $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                });
+            },
+        }
+        //注册分页
+        $('#boot_paginator').bootstrapPaginator(page_options);
+        //新增
+        $("#btn_add").click(function () {
+            var gourl = "/UserManage/UserManage/UserInfo";
+            layer.open({ type: 2, title: false, content: gourl, offset: ['130px', '23%'], area: ['72%', '500px'], shade: 0, move: false, shift: 2 });
+        });
+    });
+    //iframe更新父页面
+    function UpdatePage()
+    {
+
+        //数据分页
+        var page_options = {
+            currentPage: $('#current_page').val(),
+            totalPages: $('#total_page').val(),
+            onPageClicked: function (event, originalEvent, type, page) {
+                $.post('/UserManage/UserManage/GetUserList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                    $('#table_info').html(data);
+                    //更新当前页和总页数
+                    $('#boot_paginator').bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                });
+            },
+        }
+        //注册分页
+        $('#boot_paginator').bootstrapPaginator(page_options);
+    }
+</script>
+<div class="nav-bar">
+    <div class="nav-link">
+        <ul>
+            <li class=" icon-home icon-2x  nav-home"></li>
+            <li class="nav-li"><a href="javascript:void(0)">首页</a></li>
+            <li class="icon-angle-right icon-2x nav-angle"></li>
+            <li class="nav-li"><a href="javascript:void(0)">用户管理</a></li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary" id="btn_add">
+                    <input type="checkbox" autocomplete="off"> 新增
+                </label>
+                <label class="btn btn-primary" id="btn_filter">
+                    <input type="checkbox" autocomplete="off"> 筛选
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="search_form" style="display:none;">
+        <form id="form_search">
+            <div class="col-sm-2">
+                <label for="search_RA001">用户名：</label>
+            </div>
+            <div class="col-md-3"><input type="text" class="form-control" id="search_UA001" name="search_UA001" /></div>
+            <div class="col-md-2"><input type="submit" class="btn btn-primary" id="btn_search" value="查询" /></div>
+        </form>
+    </div>
+</div>
+    <div id="table_info">
+        @Html.Action("GetUserList")
+    </div>
+    <!--分页-->
+    <div id="boot_paginator">
+    </div>
+

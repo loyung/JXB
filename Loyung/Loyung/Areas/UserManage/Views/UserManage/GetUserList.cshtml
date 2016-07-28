@@ -1,0 +1,106 @@
+﻿@model  IEnumerable<Loyung.DBModels.USEUA>
+@{
+    ViewBag.Title = "GetUserList";
+}
+<script type="text/javascript">
+    $(function () {
+        //删除
+        $(".delete").click(function () {
+            var $this = this;
+            var $boot_paginator = $('#boot_paginator');
+            layer.confirm("确认删除？", {
+                title: "提示", icon: 3,
+                yes: function (index, lapero) {
+                    layer.close(index);
+                    $.post("/UserManage/UserManage/DeleteUserInfo", { id: $($this).attr("infoid") }, function (msg) {
+                        if (msg == "true") {
+                            //异步刷新当前页
+                            $.post('/UserManage/UserManage/GetUserList', $("#form_search").formAppendJson({ id: $("#info_pid").val(), page: $("#current_page").val(), take: $("#take_page").val() }), function (data) {
+                                $('#table_info').html(data);
+                                //更新当前页和总页数
+                                $boot_paginator.bootstrapPaginator({ currentPage: $("#current_page").val(), totalPages: $('#total_page').val() });
+                            });
+                        }
+                        else {
+                            layer.open({ title: '提示', content: '信息删除异常', icon: 3 });
+                        }
+                    });
+
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+
+        });
+        //编辑
+        $(".edit").click(function () {
+            $("#info_id").val($(this).attr("infoid"));
+            var gourl = "/UserManage/UserManage/UserInfo?id=" + $(this).attr("infoid");
+            layer.open({ type: 2, title: false, content: gourl, offset: ['130px', '23%'], area: ['72%', '500px'], shade: 0, move: false, shift: 2 });
+        });
+        
+        //表单输入验证
+        $("#form_add").validate({
+            rules: {
+                RA001: {
+                    required: true,
+                },
+
+            },
+            messages: {
+                RA001: {
+                    required: "角色名不能为空",
+                },
+            },
+            ignore: "#model_pid"//忽略不验证的元素
+        });
+     
+    });
+</script>
+
+<table class="table table-hover table-bordered" style="margin-top:20px;">
+    <tr class="success">
+        <td class="text-center">用户名</td>
+        <td class="text-center">昵称</td>
+        <td class="text-center">姓名</td>
+        <td class="text-center">手机号码</td>
+        <td class="text-center">邮箱</td>
+        <td class="text-center">状态</td>
+        <td class="text-center">角色</td>
+        <td class="text-center">操作</td>
+    </tr>
+    @{
+        if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UA001</td>
+                    <td>@item.UA002</td>
+                    <td>@item.UA003</td>
+                    <td>@item.UA006</td>
+                    <td>@item.UA008</td>
+                    <td>@BindFormat.BooleanFormat(item.UA012, "启用", "冻结", "启用")</td>
+                    <td>@item.USERC.FirstOrDefault().USERA.RA001</td>
+                    <td class="text-center">
+                        <a class="edit" infoid="@item.ID">
+                            <i title="编辑" class="icon-edit iocn-16px"></i>
+                        </a>
+                        <a class="delete" infoid="@item.ID">
+                            <i title="删除" class="icon-trash iocn-16px"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr class="table-none"><td colspan="8">暂无数据</td></tr>
+        }
+    }
+</table>
+<input type="hidden" id="take_page" value="2">
+<input type="hidden" id="total_page" value="@ViewBag.TotalPage">
+<input type="hidden" id="current_page" value="@ViewBag.CurrentPage">

@@ -1,0 +1,6 @@
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\bin\Debug\Loyung.DBModels.dll.config
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\bin\Debug\Loyung.DBModels.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\bin\Debug\Loyung.DBModels.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\obj\Debug\Loyung.DBModels.dll
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\obj\Debug\Loyung.DBModels.pdb
+D:\Subjects\[9.FrameWork]\Microsoft.NET\Loyung\Loyung.DBModels\obj\Debug\Loyung.DBModels.csprojResolveAssemblyReference.cache

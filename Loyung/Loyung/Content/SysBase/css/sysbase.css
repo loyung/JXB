@@ -1,0 +1,511 @@
+﻿/*
+    创建时间：2016-04-19
+    创建人：刘自洋
+    说明：提供常用基本样式
+ */
+* {
+    font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+label {
+    font-weight: normal;
+    height: 34px;
+    line-height: 34px;
+}
+/*元素绝对居中*/
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/*圆角矩形*/
+.round-rectangle {
+    margin: 0 auto;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.5);
+}
+/*背景半透明*/
+.opacity {
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+/*框架页布局*/
+header {
+    width: 100%;
+    height: 130px;
+    padding: 0 10%;
+    /*background-color: AppWorkspace;*/
+}
+
+.main {
+    width: 100%;
+    height: auto;
+    padding: 0 5%;
+}
+
+.left {
+    float: left;
+    width: 20%;
+    height: 500px;
+    max-height: 500px;
+    background-color: rgba(0,51,102,0.5);
+    /* background-color: #003366;
+   filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;*/
+}
+
+.right {
+    float: right;
+    width: 80%;
+    height: 500px;
+    max-height: 500px;
+    background-color: white;
+}
+/*top*/
+.logo-company {
+    float: left;
+    width: 20%;
+    height: 130px;
+    line-height: 130px;
+}
+
+.user-status {
+    float: left;
+    width: 70%;
+    height: 130px;
+    padding: 20px 0;
+    color: #fff;
+    /*background-color: yellow;*/
+}
+
+.user-board {
+    width: 90%;
+    height: 90px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    background: rgba(0,0,0,0.3);
+}
+
+.user-head {
+    float: left;
+    width: 90px;
+    height: 90px;
+}
+
+    .user-head img {
+        width: 90px;
+        height: 90px;
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+        border-radius: 50px;
+        border: 1px solid #fff;
+    }
+
+.user-name {
+    float: left;
+    width: 25%;
+    height: 90px;
+    line-height: 90px;
+    padding-left: 5%;
+}
+
+.user-daiban-box a {
+    color: #fff;
+}
+
+    .user-daiban-box a:hover {
+        color: #3366CC;
+        text-decoration: none;
+    }
+
+.user-daiban-icon {
+    float: left;
+    width: 9%;
+    height: 90px;
+    line-height: 90px;
+}
+
+.user-daiban {
+    float: left;
+    width: 12%;
+    height: 90px;
+    line-height: 90px;
+    padding-left: 1%;
+}
+
+.user-account-box a {
+    color: #fff;
+}
+
+.user-account-box a:hover {
+        color: #3366CC;
+        text-decoration: none;
+    }
+
+.user-account-icon {
+    float: left;
+    width: 7%;
+    height: 90px;
+    line-height: 90px;
+}
+
+.user-account {
+    float: left;
+    width: 12%;
+    height: 90px;
+    line-height: 90px;
+    padding-left: 1%;
+}
+
+.user-settings-box a {
+    color: #fff;
+}
+
+    .user-settings-box a:hover {
+        color: #3366CC;
+        text-decoration: none;
+    }
+
+.icon-off-icon {
+    float: left;
+    width: 7%;
+    height: 90px;
+    line-height: 90px;
+}
+
+.user-off {
+    float: left;
+    width: 12%;
+    height: 90px;
+    line-height: 90px;
+    padding-left: 1%;
+}
+/*left*/
+.menu-title {
+    width: 100%;
+    height: 100px;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.menu-title-uname {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.menu-title-urole {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.menu-title-logintime {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.menu-main {
+    width: 100%;
+    height: auto;
+}
+
+.span-icon {
+    padding-right: 5px;
+}
+
+.menu-list {
+    width: 100%;
+    height: auto;
+}
+
+.menu-list-li {
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    background: rgba(0,51,51,0.7);
+}
+
+.menu-list-title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    display: block;
+    padding: 0 15%;
+    background: rgba(36,51,66,0.5);
+    border-bottom: 1px solid #fff;
+    cursor: default;
+}
+
+    .menu-list-title:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .menu-list-title:focus {
+        color: #fff;
+        text-decoration: none;
+    }
+
+.menu-item {
+    width: 100%;
+    height: auto;
+}
+
+.menu-item-li {
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    background: none;
+}
+
+.menu-item-title {
+    width: 100%;
+    height: 30px;
+    padding: 0 20%;
+    line-height: 30px;
+    display: block;
+    color: #fff;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+    .menu-item-title:hover {
+        color: #315583;
+        text-decoration: none;
+        border: none;
+        background: rgba(0,0,0,0.3);
+    }
+
+.menu-item-focus {
+    color: #315583;
+    background: rgba(0,0,0,0.3);
+}
+
+/*right*/
+.sysme {
+    float: left;
+    width: 35%;
+    height: 200px;
+    padding: 0 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 10px;
+    border: 1px solid #777777;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.5);
+}
+
+.sysme-title {
+    width: 25%;
+    height: 30px;
+    color: #fff;
+    font-weight: bold;
+    padding-left: 5%;
+    padding-top: 1%;
+    margin-left: 5%;
+    margin-top: 10px;
+    margin-bottom: 3%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background-color: rgba(0,51,102,0.8);
+}
+
+.sysme-p {
+    text-indent: 2em;
+}
+
+#search_form {
+    margin: 0 auto;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid #ddd;
+    padding:10px 0;
+    margin-top:10px;
+}
+
+.wnl {
+    float: left;
+    width: 55%;
+    height: 450px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+/*right-List-bar*/
+.nav-bar {
+    height: 37px;
+    width: 100%;
+    border-bottom: 3px solid #05599b;
+}
+
+.nav-link {
+    float: left;
+    height: 37px;
+    line-height: 37px;
+    width: 100%;
+}
+
+
+.nav-home {
+    float: left;
+    width: 45px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+}
+
+.nav-li {
+    float: left;
+    width: auto;
+    height: 37px;
+    line-height: 37px;
+    font-size: 16px;
+}
+
+    .nav-li a {
+        color: #000;
+    }
+
+        .nav-li a:hover {
+            color: #3366CC;
+        }
+
+.nav-angle {
+    float: left;
+    width: 8px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+/*menu-main*/
+#mainform{
+    width: 100%;
+    height: 460px;
+}
+
+#mainleft {
+    float: left;
+    width: 20%;
+    height: 460px;
+    border-right: 2px solid #05599b;
+}
+
+#mainright {
+    float: right;
+    width: 80%;
+    height: 460px;
+}
+
+#main_left{
+    height: 460px;
+    width: 100%;
+}
+
+#main_right {
+    height: 460px;
+    width: 100%;
+}
+/*right-edite*/
+.row {
+    margin-top: 5px;
+}
+/*sys-ico*/
+.sys-ico {
+    width: 100%;
+    height: auto;
+    padding: 0 2%;
+}
+
+    .sys-ico li {
+        float: left;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+        .sys-ico li:hover {
+            color: #3366CC;
+        }
+/*right-list*/
+#table_info {
+    margin-top: 10px;
+}
+
+.iocn-16px {
+    font-size: 16px;
+    cursor: pointer;
+    padding-right: 10px;
+}
+
+.pagination li {
+    cursor: pointer;
+}
+.table-none {
+text-align:center;
+color:#aaa;
+font-size:30px;
+font-style:oblique;
+}
+/*limit-detail*/
+.callout-blue {
+width:90%;
+margin-top:15px;
+padding:0px 15px;
+border-left:3px solid #1B809E;
+border-top:1px solid #EEEEEE;
+border-right:1px solid #EEEEEE;
+border-bottom:1px solid #EEEEEE;
+-webkit-border-radius: 3px;
+-moz-border-radius:3px;
+border-radius: 3px;
+}
+.callout-blue h4 {
+color:#1B809E;
+    }
+.callout-red {
+width:90%;
+margin-top:15px;
+padding:0px 15px;
+border-left:3px solid #CE4844;
+border-top:1px solid #EEEEEE;
+border-right:1px solid #EEEEEE;
+border-bottom:1px solid #EEEEEE;
+-webkit-border-radius: 3px;
+-moz-border-radius:3px;
+border-radius: 3px;
+}
+.callout-red h4 {
+color:#CE4844;
+    }
