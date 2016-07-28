@@ -26,7 +26,7 @@ namespace JXB.DBModels.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(Local);Initial Catalog=JXB;User ID=sa;pwd=abc123!@#;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(Local);Initial Catalog=JXB_DB;User ID=sa;pwd=abc123!@#;")]
         public string JXBConnectionString {
             get {
                 return ((string)(this["JXBConnectionString"]));

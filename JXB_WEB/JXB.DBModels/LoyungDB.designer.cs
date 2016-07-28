@@ -22,7 +22,7 @@ namespace JXB.DBModels
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="JXB")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="JXB_DB")]
 	public partial class JXBDBDataContext : System.Data.Linq.DataContext
 	{
 		
