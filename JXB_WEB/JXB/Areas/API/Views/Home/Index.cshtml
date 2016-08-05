@@ -1,0 +1,131 @@
+﻿@using System.Reflection
+@model string
+@{
+    System.Reflection.Assembly assembly = (from c in AppDomain.CurrentDomain.GetAssemblies()
+                                           where c.FullName.StartsWith("JXB")
+                                           select c).First<Assembly>();
+
+    var xDoc = System.Xml.Linq.XDocument.Load(Server.MapPath("~/bin/JXB.XML"));
+    var docs = from method in
+                   (from item in xDoc.Element("doc").Element("members").Elements()
+                    where item.Attribute("name").Value.StartsWith("M:JXB.Areas.API.Controllers" + (string.IsNullOrWhiteSpace(Model) ? "" : "." + Model))
+                    select new
+                    {
+                        ControllerUrl = "/API/" + System.Text.RegularExpressions.Regex.Match(item.Attribute("name").Value, @"(?<=\.)[^\.]+?(?=Controller)").Value,
+                        ControllerName = System.Text.RegularExpressions.Regex.Match(item.Attribute("name").Value, @"(?<=M\:)[^(]+?(?=\.[^\.]+\()|(?<=M\:)[^$]+?(?=\.[^\.]+$)").Value,
+                        FuncName = System.Text.RegularExpressions.Regex.Match(item.Attribute("name").Value, @"(?<=\.)[^\.(]+?(?=\()|(?<=\.)[^\.$]+?(?=$)").Value,
+                        Title = item.Element("summary").Value,
+                        Return = item.Element("returns").Value,
+                        Params = item.HasElements?item.Elements("param").ToList():new List<System.Xml.Linq.XElement>()
+                    }
+                       )
+               group method by new { method.ControllerName, method.ControllerUrl } into clas
+               select new
+               {
+                   ControllerName = clas.Key.ControllerName,
+                   ControllerUrl = clas.Key.ControllerUrl,
+                   ControllerType = assembly.GetType(clas.Key.ControllerName),
+                   methods = clas.ToList()
+               };  
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>API</title>
+    <link href="~/Content/Default/css/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .table tbody > tr > th, .table tbody > tr > td {
+            word-break: break-all;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    @if (string.IsNullOrWhiteSpace(Model))
+{
+    <table border=1 align=center class="table-hover  table-striped">
+        <thead>
+            <tr>
+                <th>说明</th>
+                <th>模块地址</th>
+                <th>查看</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var controller in docs)
+            {
+
+                var title = from item in xDoc.Element("doc").Element("members").Elements()
+                            where item.Attribute("name").Value.StartsWith("T:" + controller.ControllerName)
+                            select item.Element("summary").Value;
+                <tr>
+                    <td >@title.FirstOrDefault()</td>
+                    <td>@controller.ControllerUrl</td>
+                    <td><a href="/API/Home/Index?Name=@Server.UrlEncode(System.Text.RegularExpressions.Regex.Match(controller.ControllerName,@"[^\.]+",System.Text.RegularExpressions.RegexOptions.RightToLeft).Value)">查看</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+
+        <table border=1 align="center" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>说明</th>
+                    <th>地址</th>
+                    <th>参数</th>
+                    <th>返回值</th>
+                    <th>测试</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var controller in docs)
+                {
+                    foreach (var method in controller.methods)
+                    {
+                        string Return = method.Return;
+                        #region 替换返回值
+                        //Return = System.Text.RegularExpressions.Regex.Replace(Return, @"{E\.Replace:(?<Name>\S+?)}", (m) =>
+                        //{
+                        //    string rv = "";
+                        //    return rv;
+                        //});
+                        #endregion
+
+                        <tr>
+                            <td >@Html.Raw(method.Title)</td>
+                            <td>@(method.ControllerUrl)/@(method.FuncName)</td>
+                            <td width="300">
+                                @{
+                        var methodPars = from par in method.Params
+                                         select new
+                                         {
+                                             Name = par.Attribute("name").Value,
+                                             Title = par.Value
+                                         };
+                                }
+                                @foreach (var par in methodPars)
+                                {
+                                    <br />
+                                    <text>@par.Name : @par.Title</text>
+                                }
+                            </td>
+                            <td>
+                                {<br />
+                                "errMsg":"",<br />
+                                "data":@Html.Raw(Return.Replace("\n", "<br/>")),<br />
+                                "resultStatus":"0"<br />
+                                }
+                            </td>
+                            <td><input type=text value="@(method.ControllerUrl)/@(method.FuncName)@(methodPars.Count()>0?"?":"")@(string.Join("=&", methodPars.Where(m => !m.Name.Equals("form")).Select(m => m.Name)))@(methodPars.Count()>0?"=":"")@(methodPars.Count() > 0 ? "&" : "?")_t=@(DateTime.Now.Ticks)" style="width:400px" /> <a href="javascript://" target="_blank" onclick="this.href = this.parentNode.children[0].value">测试</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    </body>
+</html>
